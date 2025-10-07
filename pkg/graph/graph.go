@@ -6,10 +6,12 @@ import (
 	"math"
 	"sync"
 
-	pq "github.com/camwhite18/ArachneGraph/pkg/priorityQueue"
+	pq "github.com/camwhite18/ArachneGraph/pkg/priority_queue"
 )
 
 type Graph interface {
+	Nodes() map[string]*Node
+	OutEdges() map[string]map[string]*Edge
 	AddNode(node *Node) error
 	GetNode(id string) (*Node, error)
 	DeleteNode(id string) error
@@ -37,6 +39,20 @@ func NewGraph() Graph {
 		in:    make(map[string]map[string]*Edge),
 		mu:    sync.RWMutex{},
 	}
+}
+
+func (g *graphImpl) Nodes() map[string]*Node {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+
+	return g.nodes
+}
+
+func (g *graphImpl) OutEdges() map[string]map[string]*Edge {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+
+	return g.out
 }
 
 func (g *graphImpl) AddNode(node *Node) error {

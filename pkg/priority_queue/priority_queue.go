@@ -1,4 +1,4 @@
-package priorityQueue
+package priority_queue
 
 // PriorityQueueItem represents an item in the priority queue for Dijkstra's
 type PriorityQueueItem struct {
